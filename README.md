@@ -51,7 +51,7 @@ See the `home-lab/` folder for architecture and setup details.
 
 **Technical:** Linux (Kali, Ubuntu), Wireshark, Nmap, VMware, Networking (TCP/IP, ARP, ICMP, DNS), Java Basics, HTML/CSS, Bash, John the Ripper, OpenSSL, Log Analysis, Packet Analysis, Virtual Lab Setup, Network Security Fundamentals
 
-**Additional:** **Situational Awareness, Attention to Detail, Incident Handling, Problem Solving, Triage & Containment, Anomaly Detection, Calm Under Pressure, Fluent in Vietnamese
+**Additional:** Situational Awareness, Attention to Detail, Incident Handling, Problem Solving, Triage & Containment, Anomaly Detection, Calm Under Pressure, Fluent in Vietnamese
 
 ---
 
