@@ -6,6 +6,10 @@ machines work together across an isolated NAT network to simulate the
 full attacker-defender loop, from initial email delivery through to 
 SIEM-based detection rule authoring.
 
+**DISCLAIMER:** This project is conducted entirely within an isolated lab 
+environment against decoy accounts under the author's own ownership. 
+All techniques demonstrated are for educational purposes only.
+
 ## Lab Environment
 
 | VM | Role | OS | IP |
@@ -27,7 +31,9 @@ SIEM-based detection rule authoring.
 # Project Kingfisher | Phase 1: Attacker Infrastructure & Phishing Campaign
 
 **Duration:** 19/04/2026 → 27/04/2026  
-**Platform:** Kali Linux (VMware Workstation Pro), Windows 10 (VMware Workstation Pro)
+
+**Platform:** Kali Linux (VMware Workstation Pro), Windows 10 (VMware Workstation Pro)  
+
 **Tools:** Gophish, Gmail SMTP, Custom HTML Landing Page
 
 ## Overview
@@ -42,7 +48,7 @@ Deployed a fully operational phishing infrastructure on an isolated lab network.
 |---|---|
 | Phishing Framework | Gophish 0.12.1 on Kali Linux |
 | Email Delivery | Gmail SMTP (smtp.gmail.com:587) with app password auth |
-| Landing Page | Cloned Microsoft 365 login page → custom HTML form |
+| Landing Page | Cloned Microsoft 365 login page (Harvest #1) → custom HTML form (Harvest #2) |
 | Attacker IP | 192.168.18.129 |
 | Victims | 2 decoy Gmail accounts |
 
@@ -52,42 +58,74 @@ Deployed a fully operational phishing infrastructure on an isolated lab network.
 
 ### Harvest #1
 
-![Campaign results dashboard](screenshots/phase1/10-campaign-results.png)
-
-![James inbox](screenshots/phase1/11-james-inbox.png)
-
-![Sarah spam](screenshots/phase1/12-sarah-spam.png)
-
 | Victim | Sent | Opened | Clicked | Submitted |
 |---|---|---|---|---|
 | James Smith | OK | OK | OK | Blocked |
 | Sarah Chen | OK | OK | OK | Blocked |
 
-**Defensive observations:**
-- Gmail routed Sarah's email to spam via reputation-based filtering — Sarah retrieved it manually, defeating the filter through user behaviour
-- Microsoft's retained client-side JavaScript validation blocked credential submission for non-tenant emails
+**Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 0 submitted.**
+
+![Harvest #1 results dashboard](screenshots/phase1/10-campaign-results.png)
+
+**Email Delivery to James Smith:**  
+Email delivered directly to the primary inbox with personalised greeting and functioning phishing link.
+
+![James' inbox](screenshots/phase1/11-james-inbox.png)
+
+**Email Delivery to Sarah Chen:**  
+Email automatically routed to Gmail's spam folder with reputation-based filtering banner. Subsequently retrieved manually from spam by the victim.
+
+![Sarah's spam](screenshots/phase1/12-sarah-spam.png)
+
+**Victim Interaction to Cloned Landing Page:**  
+Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129).
+
+![Cloned Microsoft login page on victim Win10](screenshots/phase1/13-cloned-page-victim.png)
+
+**Defensive Block to Client-Side Validation:**  
+Credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
+
+![Microsoft client-side validation error](screenshots/phase1/14-validation-error.png)
+
+---
 
 ### Harvest #2
-
-![Harvest 2 results dashboard](screenshots/phase1/16-harvest2-results.png)
-
-![James timeline](screenshots/phase1/19-james-timeline.png)
-
-![Sarah timeline](screenshots/phase1/20-sarah-timeline.png)
 
 | Victim | Sent | Opened | Clicked | Submitted |
 |---|---|---|---|---|
 | James Smith | OK | OK | OK | OK |
 | Sarah Chen | OK | OK | OK | OK |
 
-Replaced cloned page with a custom HTML login form to bypass JavaScript validation. Both victims submitted credentials. Per-victim timelines confirmed full attack chain with OS and browser fingerprinting (Windows 10, Chrome 147.0.0.0).
+**Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 2 submitted.**
+
+![Harvest #2 results dashboard](screenshots/phase1/16-harvest2-results.png)
+
+**Custom HTML Landing Page:**  
+Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, bypassing the client-side validation block from Harvest #1.
+
+![Custom HTML landing page on victim Win10](screenshots/phase1/17-harvest2-landing-page-victim.png)
+
+**Security Awareness Redirect:**  
+Upon credential submission, victims were redirected to a custom security awareness page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
+
+![Security awareness redirect page](screenshots/phase1/18-awareness-redirect.png)
+
+**Victim Timeline of James Smith:**  
+Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
+
+![James' timeline](screenshots/phase1/19-james-timeline.png)
+
+**Victim Timeline of Sarah Chen:**  
+Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
+
+![Sarah's timeline](screenshots/phase1/20-sarah-timeline.png)
 
 ---
 
-## Key Findings
+## Key Observations
 
 **Harvest #1 → Harvest #2 demonstrates the attacker adaptation loop:**  
-Initial deployment surfaced two defensive signals (spam filtering, JS validation). Both were analysed and mitigated in the second attempt — reflecting real-world offensive iteration.
+Initial deployment surfaced two defensive signals (spam filtering, JS validation). Both were analysed and mitigated in the second attempt that reflects the real-world offensive iteration.
 
 A more sophisticated attacker would additionally:
 - Strip validation JavaScript before page deployment
@@ -114,12 +152,9 @@ a self-contained isolated lab environment. Phase 1 executed two real
 phishing campaigns against decoy victims, observed live defensive 
 mechanisms, and achieved complete credential capture through iterative 
 attack adaptation. Phases 2 and 3 will extend this into defensive 
-instrumentation and SIEM-based detection engineering — building the 
+instrumentation and SIEM-based detection engineering. Therefore, building the 
 complete picture from initial phishing delivery through to detection 
 rule authoring.
 
-This project is independently built alongside a first-year Bachelor of 
-Cybersecurity at the University of Technology Sydney, targeting a career 
-path in SOC analysis, security engineering, and purple team operations.
-
 ---
+```
