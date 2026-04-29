@@ -77,11 +77,8 @@ Email automatically routed to Gmail's spam folder with reputation-based filterin
 
 ![Sarah's spam](project-kingfisher-screenshot-phase1/sarah-spam.png)
 
-**Victim Interaction to Cloned Landing Page:**  
-Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129).
-
 **Defensive Block to Client-Side Validation:**  
-Credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
+Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129). However, credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
 
 ![Microsoft client-side validation error](project-kingfisher-screenshot-phase1/validation-error.png)
 
@@ -103,10 +100,10 @@ Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, byp
 
 ![Custom HTML landing page on victim Win10](project-kingfisher-screenshot-phase1/harvest2-landing-page.png)
 
-**Security Awareness Redirect:**  
-Upon credential submission, victims were redirected to a custom security awareness page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
+**Customer HTML Redirect:**  
+Upon credential submission, victims were redirected to a custom HTML page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
-![Security awareness redirect page](project-kingfisher-screenshot-phase1/awareness-redirect.png)
+![Customer HTML redirect page](project-kingfisher-screenshot-phase1/awareness-redirect.png)
 
 **Victim Timeline of James Smith:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
