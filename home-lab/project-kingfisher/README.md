@@ -65,27 +65,25 @@ Deployed a fully operational phishing infrastructure on an isolated lab network.
 
 **Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 0 submitted.**
 
-![Harvest #1 results dashboard](screenshots/phase1/10-campaign-results.png)
+![Harvest #1 results dashboard](project-kingfisher-screenshot-phase1/harvest1-dashboard.png)
 
 **Email Delivery to James Smith:**  
 Email delivered directly to the primary inbox with personalised greeting and functioning phishing link.
 
-![James' inbox](screenshots/phase1/11-james-inbox.png)
+![James' inbox](project-kingfisher-screenshot-phase1/james-inbox.png)
 
 **Email Delivery to Sarah Chen:**  
 Email automatically routed to Gmail's spam folder with reputation-based filtering banner. Subsequently retrieved manually from spam by the victim.
 
-![Sarah's spam](screenshots/phase1/12-sarah-spam.png)
+![Sarah's spam](project-kingfisher-screenshot-phase1/sarah-spam.png)
 
 **Victim Interaction to Cloned Landing Page:**  
 Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129).
 
-![Cloned Microsoft login page on victim Win10](screenshots/phase1/13-cloned-page-victim.png)
-
 **Defensive Block to Client-Side Validation:**  
 Credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
 
-![Microsoft client-side validation error](screenshots/phase1/14-validation-error.png)
+![Microsoft client-side validation error](project-kingfisher-screenshot-phase1/validation-error.png)
 
 ---
 
@@ -98,27 +96,27 @@ Credential submission was blocked by Microsoft's retained client-side JavaScript
 
 **Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 2 submitted.**
 
-![Harvest #2 results dashboard](screenshots/phase1/16-harvest2-results.png)
+![Harvest #2 results dashboard](project-kingfisher-screenshot-phase1/harvest2-dashboard.png)
 
 **Custom HTML Landing Page:**  
 Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, bypassing the client-side validation block from Harvest #1.
 
-![Custom HTML landing page on victim Win10](screenshots/phase1/17-harvest2-landing-page-victim.png)
+![Custom HTML landing page on victim Win10](project-kingfisher-screenshot-phase1/harvest2-landing-page.png)
 
 **Security Awareness Redirect:**  
 Upon credential submission, victims were redirected to a custom security awareness page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
-![Security awareness redirect page](screenshots/phase1/18-awareness-redirect.png)
+![Security awareness redirect page](project-kingfisher-screenshot-phase1/awareness-redirect.png)
 
 **Victim Timeline of James Smith:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
-![James' timeline](screenshots/phase1/19-james-timeline.png)
+![James' timeline](project-kingfisher-screenshot-phase1/james-timeline.png)
 
 **Victim Timeline of Sarah Chen:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
-![Sarah's timeline](screenshots/phase1/20-sarah-timeline.png)
+![Sarah's timeline](project-kingfisher-screenshot-phase1/sarah-timeline.png)
 
 ---
 
@@ -157,4 +155,3 @@ complete picture from initial phishing delivery through to detection
 rule authoring.
 
 ---
-```
