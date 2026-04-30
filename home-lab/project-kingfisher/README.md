@@ -65,22 +65,22 @@ Deployed a fully operational phishing infrastructure on an isolated lab network.
 
 **Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 0 submitted.**
 
-![Harvest #1 results dashboard](project-kingfisher-screenshot-phase1/harvest1-dashboard.png)
+![Harvest #1 results dashboard](project-kingfisher-phase1photos/1-harvest1-dashboard.png)
 
 **Email Delivery to James Smith:**  
 Email delivered directly to the primary inbox with personalised greeting and functioning phishing link.
 
-![James' inbox](project-kingfisher-screenshot-phase1/james-inbox.png)
+![James' inbox](project-kingfisher-phase1photos/2-james-inbox.png)
 
 **Email Delivery to Sarah Chen:**  
 Email automatically routed to Gmail's spam folder with reputation-based filtering banner. Subsequently retrieved manually from spam by the victim.
 
-![Sarah's spam](project-kingfisher-screenshot-phase1/sarah-spam.png)
+![Sarah's spam](project-kingfisher-phase1photos/3-sarah-spam.png)
 
 **Defensive Block to Client-Side Validation:**  
 Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129). However, credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
 
-![Microsoft client-side validation error](project-kingfisher-screenshot-phase1/validation-error.png)
+![Microsoft client-side validation error](project-kingfisher-phase1photos/4-microsoft-clientside-valerror.png)
 
 ---
 
@@ -93,39 +93,39 @@ Both victims clicked the phishing link, loading the cloned Microsoft 365 login p
 
 **Campaign dashboard showing 2 sent, 2 opened, 2 clicked, 2 submitted.**
 
-![Harvest #2 results dashboard](project-kingfisher-screenshot-phase1/harvest2-dashboard.png)
+![Harvest #2 results dashboard](project-kingfisher-phase1photos/5-harvest2-dashboard.png)
 
 **Custom HTML Landing Page:**  
 Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, bypassing the client-side validation block from Harvest #1.
 
-![Custom HTML landing page on victim Win10](project-kingfisher-screenshot-phase1/harvest2-landing-page.png)
+![Custom HTML landing page on victim Win10](project-kingfisher-phase1photos/6-custom-html-landingpage.png)
 
 **Customer HTML Redirect:**  
 Upon credential submission, victims were redirected to a custom HTML page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
-![Customer HTML redirect page](project-kingfisher-screenshot-phase1/awareness-redirect.png)
+![Customer HTML redirect page](project-kingfisher-phase1photos/7-custom-html-redirectpage.png)
 
 **Victim Timeline of James Smith:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
-![James' timeline](project-kingfisher-screenshot-phase1/james-timeline.png)
+![James' timeline](project-kingfisher-phase1photos/8-james-timeline.png)
 
 **Victim Timeline of Sarah Chen:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
-![Sarah's timeline](project-kingfisher-screenshot-phase1/sarah-timeline.png)
+![Sarah's timeline](project-kingfisher-phase1photos/9-sarah-timeline.png)
 
 ---
 
 ## Key Observations
 
 **Harvest #1 → Harvest #2 demonstrates the attacker adaptation loop:**  
-Initial deployment surfaced two defensive signals (spam filtering, JS validation). Both were analysed and mitigated in the second attempt that reflects the real-world offensive iteration.
+Initial deployment surfaced two defensive signals (Gmail spam filtering and Microsoft's retained client-side JavaScript validation), with the validation layer blocking credential submission. Harvest #2 mitigated this by replacing the cloned page with a custom-authored Microsoft 365 login form (stripped of validation logic and configured with named form fields). The campaign successfully captured plaintext credentials (username and password) from both victims in Gophish's parameter table. This reflects the real-world offensive iteration loop: observe defensive signals, adapt tradecraft, re-execute.
 
 A more sophisticated attacker would additionally:
-- Strip validation JavaScript before page deployment
-- Serve pages over HTTPS with a convincing domain
-- Host all assets locally for full visual fidelity
+- Serve pages over HTTPS with a convincing domain to reduce "Not secure" browser warnings
+- Host all assets locally rather than relying on Microsoft's CDN
+- Register a typosquat domain (e.g. `microsft-login.com`) to defeat URL-based detection
 
 ---
 
