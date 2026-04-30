@@ -30,7 +30,7 @@ All techniques demonstrated are for educational purposes only.
 
 # Project Kingfisher | Phase 1: Attacker Infrastructure & Phishing Campaign
 
-**Duration:** 19/04/2026 → 27/04/2026  
+**Duration:** 19/04/2026 → 30/04/2026  
 
 **Platform:** Kali Linux (VMware Workstation Pro), Windows 10 (VMware Workstation Pro)  
 
