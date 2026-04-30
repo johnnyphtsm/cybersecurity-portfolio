@@ -100,7 +100,7 @@ Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, byp
 
 ![Custom HTML landing page on victim Win10](project-kingfisher-phase1photos/6-custom-html-landingpage.png)
 
-**Customer HTML Redirect:**  
+**Custom HTML Redirect:**  
 Upon credential submission, victims were redirected to a custom HTML page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
 ![Custom HTML redirect page](project-kingfisher-phase1photos/7-custom-html-redirectpage.png)
