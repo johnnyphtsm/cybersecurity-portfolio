@@ -103,7 +103,7 @@ Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, byp
 **Customer HTML Redirect:**  
 Upon credential submission, victims were redirected to a custom HTML page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
-![Customer HTML redirect page](project-kingfisher-phase1photos/7-custom-html-redirectpage.png)
+![Custom HTML redirect page](project-kingfisher-phase1photos/7-custom-html-redirectpage.png)
 
 **Victim Timeline of James Smith:**  
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
