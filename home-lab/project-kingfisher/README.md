@@ -231,11 +231,13 @@ The lab Windows 10 instance ran Home edition, which lacks `gpedit.msc`. PowerShe
 
 **PowerShell 5.0+ has baseline Warning-level detection** 
 
-Event ID 4104 fires automatically at Warning level when PowerShell detects suspicious script content (encoded commands, obfuscation patterns) — even without Script Block Logging explicitly enabled. This baseline detection caught the test encoded command immediately, demonstrating that PowerShell ships with built-in attacker tradecraft awareness.
+Event ID 4104 fires automatically at Warning level when PowerShell detects suspicious script content (encoded commands, obfuscation patterns) even without Script Block Logging explicitly enabled. This baseline detection caught the test encoded command immediately, demonstrating that PowerShell ships with built-in attacker tradecraft awareness.
 
 **Multi-source telemetry validates defence in depth** 
 
 A single attacker action generates events across multiple log sources simultaneously: Sysmon captures the process and network context, PowerShell logging captures the script content, and Windows Security log captures native process creation. Attackers may evade one logging mechanism, but evading all three is significantly harder. This redundancy is intentional in enterprise environments and forms the basis for cross-source correlation in detection engineering.
+
+---
 
 ## MITRE ATT&CK Telemetry Coverage
 
@@ -248,6 +250,8 @@ Phase 2 establishes detection telemetry for the following techniques:
 | Obfuscated Files or Information | T1027 | PowerShell EID 4104 Warning |
 | Application Layer Protocol | T1071 | Sysmon EID 3 |
 | Input Capture: Web Portal Capture | T1056.003 | Sysmon EID 3 |
+
+---
 
 ## Conclusion
 
