@@ -23,8 +23,8 @@ All techniques demonstrated are for educational purposes only.
 | Phase | Focus | Status |
 |---|---|---|
 | Phase 1 | Attacker Infrastructure & Phishing Campaign | Completed |
-| Phase 2 | Victim Instrumentation & Telemetry Capture | In Progress |
-| Phase 3 | Detection Engineering & SIEM Rule Authoring | Pending |
+| Phase 2 | Victim Instrumentation & Telemetry Capture | Completed |
+| Phase 3 | Detection Engineering & SIEM Rule Authoring | In Progress |
 
 ---
 
@@ -131,12 +131,12 @@ A more sophisticated attacker would additionally:
 
 ## MITRE ATT&CK Coverage
 
-| Technique | ID |
-|---|---|
-| Phishing: Spearphishing Link | T1566.002 |
-| User Execution: Malicious Link | T1204.001 |
-| Input Capture: Web Portal Capture | T1056.003 |
-| Valid Accounts | T1078 |
+| Technique | ID | Source |
+|---|---|---|
+| Phishing: Spearphishing Link | T1566.002 | Gophish email send |
+| User Execution: Malicious Link | T1204.001 | Victim click event |
+| Input Capture: Web Portal Capture | T1056.003 | Captured credentials |
+| Valid Accounts | T1078 | Functional account material |
 
 ---
 
@@ -150,5 +150,95 @@ attack adaptation. Phases 2 and 3 will extend this into defensive
 instrumentation and SIEM-based detection engineering. Therefore, building the 
 complete picture from initial phishing delivery through to detection 
 rule authoring.
+
+
+
+---
+
+# Project Kingfisher | Phase 2: Victim Instrumentation & Telemetry Capture
+
+**Status:** Complete  
+
+**Duration:** 09/05/2026 → 10/05/2026
+
+**Platform:** Windows 10 (VMware Workstation Pro)  
+
+**Tools:** Sysmon (SwiftOnSecurity config), PowerShell, Windows Registry Editor, auditpol, Windows Event Viewer
+
+## Overview
+
+Phase 2 transforms the Windows 10 victim host from a passive participant into a fully instrumented endpoint. Three independent logging layers were configured to capture process activity, PowerShell execution, and Windows native audit events. Therefore, providing the multi-source telemetry that Phase 3 detection engineering will operate on.
+
+---
+
+### Logging Layers Configured
+
+| Layer | Tool | Captures |
+|---|---|---|
+| Endpoint Visibility | Sysmon (SwiftOnSecurity config) | Process creation, network connections, registry changes, DNS queries |
+| PowerShell Auditing | Native PowerShell logging | Module execution, script block content, transcripts |
+| Native Windows Auditing | Windows Audit Policy | Process creation with command line (EID 4688) |
+
+### Build Walkthrough
+
+![Sysmon Install Success](project-kingfisher-phase2photos/1-sysmon-install-success.png)
+
+**Sysmon Install Success:**
+Sysmon installation with SwiftOnSecurity schema 4.91 loaded. Driver and service installed successfully.
+
+![Sysmon Service Running](project-kingfisher-phase2photos/2-sysmon-service-running.png)
+
+**Sysmon Service Running:**
+Sysmon64 service confirmed in Running state with active process (PID 3976).
+
+![Sysmon Event Viewer Overview](project-kingfisher-phase2photos/3-sysmon-eventviewer-overview.png)
+
+**Sysmon Event Viewer Overview:**
+Sysmon Operational log showing 1,157+ events across multiple Event IDs: Process Create (1), Network Connection (3), Registry Modification (13), DNS Query (22).
+
+![Powershell Module Logging](project-kingfisher-phase2photos/4-powershell-module-logging.png)
+
+**Powershell Module Logging:**
+PowerShell Module Logging registry configuration applied via PowerShell. EnableModuleLogging set to 1 with wildcard module coverage.
+
+![Powershell EID 4104 Warning](project-kingfisher-phase2photos/5-powershell-eid4104-warning.png)
+
+**Powershell EID 4104 Warning:**
+PowerShell Event ID 4104 Warning firing on encoded command execution. Script block content captured, demonstrating defensive logging detecting obfuscation attempts.
+
+![Audit Policy Command](project-kingfisher-phase2photos/6-audit-policy-commandline.png)
+
+**Audit Policy Command:**
+Process Creation auditing enabled via auditpol with command line inclusion configured via registry.
+
+### Key Observations
+
+**Win10 Home requires registry-based configuration** 
+
+The lab Windows 10 instance ran Home edition, which lacks `gpedit.msc`. PowerShell logging and command-line auditing were configured via direct Windows Registry edits; Group Policy is fundamentally a UI for writing to registry, so bypassing the GUI achieves identical outcomes while deepening understanding of how Windows policy enforcement actually works.
+
+**PowerShell 5.0+ has baseline Warning-level detection** 
+
+Event ID 4104 fires automatically at Warning level when PowerShell detects suspicious script content (encoded commands, obfuscation patterns) — even without Script Block Logging explicitly enabled. This baseline detection caught the test encoded command immediately, demonstrating that PowerShell ships with built-in attacker tradecraft awareness.
+
+**Multi-source telemetry validates defence in depth** 
+
+A single attacker action generates events across multiple log sources simultaneously: Sysmon captures the process and network context, PowerShell logging captures the script content, and Windows Security log captures native process creation. Attackers may evade one logging mechanism, but evading all three is significantly harder. This redundancy is intentional in enterprise environments and forms the basis for cross-source correlation in detection engineering.
+
+### MITRE ATT&CK Telemetry Coverage
+
+Phase 2 establishes detection telemetry for the following techniques:
+
+| Technique | ID | Telemetry Source |
+|---|---|---|
+| Command and Scripting Interpreter: PowerShell | T1059.001 | PowerShell EID 4103/4104, Sysmon EID 1, Security EID 4688 |
+| User Execution: Malicious Link | T1204.001 | Sysmon EID 1, Sysmon EID 3 |
+| Obfuscated Files or Information | T1027 | PowerShell EID 4104 Warning |
+| Application Layer Protocol | T1071 | Sysmon EID 3 |
+| Input Capture: Web Portal Capture | T1056.003 | Sysmon EID 3 |
+
+### Conclusion
+
+Phase 2 successfully instrumented the Windows 10 victim host across three independent logging layers, transforming it from a passive endpoint into a comprehensive telemetry source. Sysmon, PowerShell logging, and Windows audit policy each capture different aspects of system activity, with overlap that enables cross-source correlation. The Win10 Home registry-based configuration approach, while necessitated by edition limitations, ultimately provided deeper understanding of Windows policy enforcement than a Group Policy GUI workflow would have.
 
 ---
