@@ -96,21 +96,25 @@ Both victims clicked the phishing link, loading the cloned Microsoft 365 login p
 ![Harvest #2 results dashboard](project-kingfisher-phase1photos/5-harvest2-dashboard.png)
 
 **Custom HTML Landing Page:**  
+
 Cloned Microsoft 365 page replaced with externally-sourced custom HTML form, bypassing the client-side validation block from Harvest #1.
 
 ![Custom HTML landing page on victim Win10](project-kingfisher-phase1photos/6-custom-html-landingpage.png)
 
 **Custom HTML Redirect:**  
+
 Upon credential submission, victims were redirected to a custom HTML page hosted on the attacker's infrastructure (192.168.18.129:8080), confirming the simulated attack was successful.
 
 ![Custom HTML redirect page](project-kingfisher-phase1photos/7-custom-html-redirectpage.png)
 
-**Victim Timeline of James Smith:**  
+**Victim Timeline of James Smith:** 
+
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
 ![James' timeline](project-kingfisher-phase1photos/8-james-timeline.png)
 
 **Victim Timeline of Sarah Chen:**  
+
 Full attack chain captured with OS and browser fingerprinting on each event (Windows 10, Chrome 147.0.0.0).
 
 ![Sarah's timeline](project-kingfisher-phase1photos/9-sarah-timeline.png)
@@ -171,7 +175,7 @@ Phase 2 transforms the Windows 10 victim host from a passive participant into a 
 
 ---
 
-### Logging Layers Configured
+## Logging Layers Configured
 
 | Layer | Tool | Captures |
 |---|---|---|
@@ -179,39 +183,47 @@ Phase 2 transforms the Windows 10 victim host from a passive participant into a 
 | PowerShell Auditing | Native PowerShell logging | Module execution, script block content, transcripts |
 | Native Windows Auditing | Windows Audit Policy | Process creation with command line (EID 4688) |
 
-### Build Walkthrough
+## Build Walkthrough
 
 ![Sysmon Install Success](project-kingfisher-phase2photos/1-sysmon-install-success.png)
 
 **Sysmon Install Success:**
+
 Sysmon installation with SwiftOnSecurity schema 4.91 loaded. Driver and service installed successfully.
 
 ![Sysmon Service Running](project-kingfisher-phase2photos/2-sysmon-service-running.png)
 
 **Sysmon Service Running:**
+
 Sysmon64 service confirmed in Running state with active process (PID 3976).
 
 ![Sysmon Event Viewer Overview](project-kingfisher-phase2photos/3-sysmon-eventviewer-overview.png)
 
 **Sysmon Event Viewer Overview:**
+
 Sysmon Operational log showing 1,157+ events across multiple Event IDs: Process Create (1), Network Connection (3), Registry Modification (13), DNS Query (22).
 
 ![Powershell Module Logging](project-kingfisher-phase2photos/4-powershell-module-logging.png)
 
 **Powershell Module Logging:**
+
 PowerShell Module Logging registry configuration applied via PowerShell. EnableModuleLogging set to 1 with wildcard module coverage.
 
 ![Powershell EID 4104 Warning](project-kingfisher-phase2photos/5-powershell-eid4104-warning.png)
 
 **Powershell EID 4104 Warning:**
+
 PowerShell Event ID 4104 Warning firing on encoded command execution. Script block content captured, demonstrating defensive logging detecting obfuscation attempts.
 
 ![Audit Policy Command](project-kingfisher-phase2photos/6-audit-policy-commandline.png)
 
 **Audit Policy Command:**
+
 Process Creation auditing enabled via auditpol with command line inclusion configured via registry.
 
-### Key Observations
+---
+
+## Key Observations
 
 **Win10 Home requires registry-based configuration** 
 
@@ -225,7 +237,7 @@ Event ID 4104 fires automatically at Warning level when PowerShell detects suspi
 
 A single attacker action generates events across multiple log sources simultaneously: Sysmon captures the process and network context, PowerShell logging captures the script content, and Windows Security log captures native process creation. Attackers may evade one logging mechanism, but evading all three is significantly harder. This redundancy is intentional in enterprise environments and forms the basis for cross-source correlation in detection engineering.
 
-### MITRE ATT&CK Telemetry Coverage
+## MITRE ATT&CK Telemetry Coverage
 
 Phase 2 establishes detection telemetry for the following techniques:
 
@@ -237,7 +249,7 @@ Phase 2 establishes detection telemetry for the following techniques:
 | Application Layer Protocol | T1071 | Sysmon EID 3 |
 | Input Capture: Web Portal Capture | T1056.003 | Sysmon EID 3 |
 
-### Conclusion
+## Conclusion
 
 Phase 2 successfully instrumented the Windows 10 victim host across three independent logging layers, transforming it from a passive endpoint into a comprehensive telemetry source. Sysmon, PowerShell logging, and Windows audit policy each capture different aspects of system activity, with overlap that enables cross-source correlation. The Win10 Home registry-based configuration approach, while necessitated by edition limitations, ultimately provided deeper understanding of Windows policy enforcement than a Group Policy GUI workflow would have.
 
