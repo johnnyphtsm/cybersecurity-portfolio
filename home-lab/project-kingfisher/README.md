@@ -68,16 +68,19 @@ Deployed a fully operational phishing infrastructure on an isolated lab network.
 ![Harvest #1 results dashboard](project-kingfisher-phase1photos/1-harvest1-dashboard.png)
 
 **Email Delivery to James Smith:**  
+
 Email delivered directly to the primary inbox with personalised greeting and functioning phishing link.
 
 ![James' inbox](project-kingfisher-phase1photos/2-james-inbox.png)
 
-**Email Delivery to Sarah Chen:**  
+**Email Delivery to Sarah Chen:** 
+
 Email automatically routed to Gmail's spam folder with reputation-based filtering banner. Subsequently retrieved manually from spam by the victim.
 
 ![Sarah's spam](project-kingfisher-phase1photos/3-sarah-spam.png)
 
 **Defensive Block to Client-Side Validation:**  
+
 Both victims clicked the phishing link, loading the cloned Microsoft 365 login page served from the attacker's infrastructure (192.168.18.129). However, credential submission was blocked by Microsoft's retained client-side JavaScript validation, which attempted to authenticate Gmail addresses against Microsoft's directory service.
 
 ![Microsoft client-side validation error](project-kingfisher-phase1photos/4-microsoft-clientside-valerror.png)
@@ -185,41 +188,41 @@ Phase 2 transforms the Windows 10 victim host from a passive participant into a 
 
 ## Build Walkthrough
 
-![Sysmon Install Success](project-kingfisher-phase2photos/1-sysmon-install-success.png)
-
 **Sysmon Install Success:**
 
 Sysmon installation with SwiftOnSecurity schema 4.91 loaded. Driver and service installed successfully.
 
-![Sysmon Service Running](project-kingfisher-phase2photos/2-sysmon-service-running.png)
+![Sysmon Install Success](project-kingfisher-phase2photos/1-sysmon-install-success.png)
 
 **Sysmon Service Running:**
 
 Sysmon64 service confirmed in Running state with active process (Process ID 3976).
 
-![Sysmon Event Viewer Overview](project-kingfisher-phase2photos/3-sysmon-eventviewer-overview.png)
+![Sysmon Service Running](project-kingfisher-phase2photos/2-sysmon-service-running.png)
 
 **Sysmon Event Viewer Overview:**
 
 Sysmon Operational log showing 1,157+ events across multiple Event IDs: Process Create (1), Network Connection (3), Registry Modification (13), DNS Query (22).
 
-![Powershell Module Logging](project-kingfisher-phase2photos/4-powershell-module-logging.png)
+![Sysmon Event Viewer Overview](project-kingfisher-phase2photos/3-sysmon-eventviewer-overview.png)
 
 **Powershell Module Logging:**
 
 PowerShell Module Logging registry configuration applied via PowerShell. EnableModuleLogging set to 1 with wildcard module coverage.
 
-![Powershell EID 4104 Warning](project-kingfisher-phase2photos/5-powershell-eid4104-warning.png)
+![Powershell Module Logging](project-kingfisher-phase2photos/4-powershell-module-logging.png)
 
 **Powershell EID 4104 Warning:**
 
 PowerShell Event ID 4104 Warning firing on encoded command execution. Script block content captured, demonstrating defensive logging detecting obfuscation attempts.
 
-![Audit Policy Command](project-kingfisher-phase2photos/6-audit-policy-commandline.png)
+![Powershell EID 4104 Warning](project-kingfisher-phase2photos/5-powershell-eid4104-warning.png)
 
 **Audit Policy Command:**
 
 Process Creation auditing enabled via auditpol with command line inclusion configured via registry.
+
+![Audit Policy Command](project-kingfisher-phase2photos/6-audit-policy-commandline.png)
 
 ---
 
