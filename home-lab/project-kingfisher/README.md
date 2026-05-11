@@ -195,7 +195,7 @@ Sysmon installation with SwiftOnSecurity schema 4.91 loaded. Driver and service 
 
 **Sysmon Service Running:**
 
-Sysmon64 service confirmed in Running state with active process (PID 3976).
+Sysmon64 service confirmed in Running state with active process (Process ID 3976).
 
 ![Sysmon Event Viewer Overview](project-kingfisher-phase2photos/3-sysmon-eventviewer-overview.png)
 
